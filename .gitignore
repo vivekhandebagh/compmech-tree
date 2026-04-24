@@ -3,6 +3,11 @@ dist/
 .DS_Store
 *.log
 
+# TypeScript composite build output (tsconfig.node.json)
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+
 # Python
 __pycache__/
 *.pyc

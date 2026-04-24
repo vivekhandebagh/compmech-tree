@@ -2,11 +2,14 @@ import { YEAR_MIN, YEAR_MAX, AXIS_HEIGHT, yearToX } from "./constants";
 
 interface Props {
   width: number;
+  xPerYear: number;
 }
 
-export function YearAxis({ width }: Props) {
+export function YearAxis({ width, xPerYear }: Props) {
   const years: number[] = [];
   for (let y = YEAR_MIN; y <= YEAR_MAX; y++) years.push(y);
+  const showHalfLabels = xPerYear >= 60;
+  const showMinorTicks = xPerYear >= 50;
 
   return (
     <g>
@@ -21,7 +24,8 @@ export function YearAxis({ width }: Props) {
       {years.map((y) => {
         const isDecade = y % 10 === 0;
         const isHalf = y % 5 === 0;
-        const x = yearToX(y);
+        if (!isDecade && !isHalf && !showMinorTicks) return null;
+        const x = yearToX(y, xPerYear);
         return (
           <g key={y} transform={`translate(${x}, 0)`}>
             <line
@@ -44,7 +48,7 @@ export function YearAxis({ width }: Props) {
                 {y}
               </text>
             )}
-            {!isDecade && isHalf && (
+            {!isDecade && isHalf && showHalfLabels && (
               <text
                 x={0}
                 y={14}

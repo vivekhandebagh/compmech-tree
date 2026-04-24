@@ -8,6 +8,7 @@ const COLOR_HALO = "rgba(29 78 216 / 0.15)";
 interface Props {
   paper: Paper;
   rowIndex: number;
+  xPerYear: number;
   hovered: boolean;
   pinned: boolean;
   dimmed: boolean;
@@ -15,12 +16,21 @@ interface Props {
   onPin: (id: string) => void;
 }
 
-export function PaperNode({ paper, rowIndex, hovered, pinned, dimmed, onHover, onPin }: Props) {
-  const cx = yearToX(paper.year);
+export function PaperNode({
+  paper,
+  rowIndex,
+  xPerYear,
+  hovered,
+  pinned,
+  dimmed,
+  onHover,
+  onPin,
+}: Props) {
+  const cx = yearToX(paper.year, xPerYear);
   const cy = rowToY(rowIndex);
   const active = hovered || pinned;
   const r = active ? NODE_HOVER_RADIUS : NODE_RADIUS;
-  const fill = active ? COLOR_ACTIVE : COLOR_DEFAULT;
+  const stroke = active ? COLOR_ACTIVE : COLOR_DEFAULT;
   const opacity = dimmed ? 0.2 : 1;
   return (
     <g
@@ -36,7 +46,7 @@ export function PaperNode({ paper, rowIndex, hovered, pinned, dimmed, onHover, o
       <circle
         r={r}
         fill="white"
-        stroke={fill}
+        stroke={stroke}
         strokeWidth={pinned ? 2.25 : active ? 2 : 1.5}
         style={{ transition: "r 150ms, stroke 120ms, stroke-width 120ms" }}
       />

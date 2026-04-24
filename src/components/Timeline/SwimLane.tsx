@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { forwardRef, useMemo } from "react";
 import type { Corpus, Paper } from "../../data/types";
 import { YearAxis } from "./YearAxis";
 import { Ribbon } from "./Ribbon";
@@ -14,6 +14,7 @@ import {
 
 interface Props {
   corpus: Corpus;
+  xPerYear: number;
   hoveredId: string | null;
   pinnedId: string | null;
   hoveredRow: number | null;
@@ -24,15 +25,11 @@ interface Props {
 const EDGE_ANCESTOR = "rgb(29 78 216)";
 const EDGE_DESCENDANT = "rgb(120 113 108)";
 
-export function SwimLane({
-  corpus,
-  hoveredId,
-  pinnedId,
-  hoveredRow,
-  onHover,
-  onPin,
-}: Props) {
-  const width = totalWidth();
+export const SwimLane = forwardRef<SVGSVGElement, Props>(function SwimLane(
+  { corpus, xPerYear, hoveredId, pinnedId, hoveredRow, onHover, onPin },
+  ref,
+) {
+  const width = totalWidth(xPerYear);
   const height = bodyHeight(corpus.taxonomy.rows.length);
   const rowIndexById = useMemo(
     () =>
@@ -74,6 +71,7 @@ export function SwimLane({
 
   return (
     <svg
+      ref={ref}
       width={width}
       height={height}
       className="block"
@@ -86,16 +84,16 @@ export function SwimLane({
         })}
       </g>
 
-      <YearAxis width={width} />
+      <YearAxis width={width} xPerYear={xPerYear} />
 
       <g>
         {edges.map((e, i) => {
           const fromRow = rowIndexById.get(e.from.primary_row);
           const toRow = rowIndexById.get(e.to.primary_row);
           if (fromRow === undefined || toRow === undefined) return null;
-          const x1 = yearToX(e.from.year);
+          const x1 = yearToX(e.from.year, xPerYear);
           const y1 = rowToY(fromRow);
-          const x2 = yearToX(e.to.year);
+          const x2 = yearToX(e.to.year, xPerYear);
           const y2 = rowToY(toRow);
           const midX = (x1 + x2) / 2;
           const d = `M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}`;
@@ -129,6 +127,7 @@ export function SwimLane({
               key={p.id}
               paper={p}
               rowIndex={rowIndex}
+              xPerYear={xPerYear}
               hovered={isHovered}
               pinned={isPinned}
               dimmed={dimmed}
@@ -140,6 +139,6 @@ export function SwimLane({
       </g>
     </svg>
   );
-}
+});
 
 export const SWIMLANE_DIMENSIONS = { AXIS_HEIGHT, ROW_HEIGHT };
