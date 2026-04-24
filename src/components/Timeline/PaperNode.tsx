@@ -1,10 +1,13 @@
 import { NODE_HOVER_RADIUS, NODE_RADIUS, yearToX, rowToY } from "./constants";
-import type { Paper, TaxonomyRow } from "../../data/types";
+import type { Paper } from "../../data/types";
+
+const COLOR_DEFAULT = "rgb(23 23 23)";
+const COLOR_ACTIVE = "rgb(29 78 216)";
+const COLOR_HALO = "rgba(29 78 216 / 0.15)";
 
 interface Props {
   paper: Paper;
   rowIndex: number;
-  row: TaxonomyRow;
   hovered: boolean;
   pinned: boolean;
   dimmed: boolean;
@@ -12,11 +15,13 @@ interface Props {
   onPin: (id: string) => void;
 }
 
-export function PaperNode({ paper, rowIndex, row, hovered, pinned, dimmed, onHover, onPin }: Props) {
+export function PaperNode({ paper, rowIndex, hovered, pinned, dimmed, onHover, onPin }: Props) {
   const cx = yearToX(paper.year);
   const cy = rowToY(rowIndex);
-  const r = hovered || pinned ? NODE_HOVER_RADIUS : NODE_RADIUS;
-  const opacity = dimmed ? 0.18 : 1;
+  const active = hovered || pinned;
+  const r = active ? NODE_HOVER_RADIUS : NODE_RADIUS;
+  const fill = active ? COLOR_ACTIVE : COLOR_DEFAULT;
+  const opacity = dimmed ? 0.2 : 1;
   return (
     <g
       transform={`translate(${cx}, ${cy})`}
@@ -25,18 +30,15 @@ export function PaperNode({ paper, rowIndex, row, hovered, pinned, dimmed, onHov
       onMouseLeave={() => onHover(null)}
       onClick={() => onPin(paper.id)}
     >
-      <circle
-        r={r + 2}
-        fill={row.color}
-        fillOpacity={hovered || pinned ? 0.3 : 0}
-        style={{ transition: "fill-opacity 150ms, r 150ms" }}
-      />
+      {active && (
+        <circle r={r + 5} fill={COLOR_HALO} style={{ transition: "r 150ms" }} />
+      )}
       <circle
         r={r}
-        fill={row.color}
-        stroke={pinned ? "white" : "rgb(23 23 23)"}
-        strokeWidth={pinned ? 2 : 1.5}
-        style={{ transition: "r 150ms" }}
+        fill={fill}
+        stroke={pinned ? "white" : "white"}
+        strokeWidth={pinned ? 2 : 1}
+        style={{ transition: "r 150ms, fill 120ms" }}
       />
     </g>
   );

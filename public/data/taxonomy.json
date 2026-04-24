@@ -1,74 +1,14 @@
 {
   "rows": [
-    {
-      "id": 1,
-      "name": "Nonlinear dynamics & chaos (legacy)",
-      "short": "Chaos & nonlinear dyn.",
-      "blurb": "Pre-compmech: attractors, noise, reconstruction",
-      "color": "#fbbf24"
-    },
-    {
-      "id": 2,
-      "name": "Foundations: ε-machines & causal states",
-      "short": "ε-machines & causal states",
-      "blurb": "Minimality, unifilarity, uniqueness",
-      "color": "#a78bfa"
-    },
-    {
-      "id": 3,
-      "name": "Information measures of structure",
-      "short": "Information measures",
-      "blurb": "Statistical complexity, excess entropy, crypticity",
-      "color": "#38bdf8"
-    },
-    {
-      "id": 4,
-      "name": "Stochastic-process structure",
-      "short": "Process structure",
-      "blurb": "HMMs, process lattice, mixed-state presentations",
-      "color": "#2dd4bf"
-    },
-    {
-      "id": 5,
-      "name": "Inference & learning",
-      "short": "Inference & learning",
-      "blurb": "CSSR, Bayesian structural inference",
-      "color": "#34d399"
-    },
-    {
-      "id": 6,
-      "name": "Spatial / pattern compmech",
-      "short": "Spatial compmech",
-      "blurb": "Cellular automata, spatiotemporal processes",
-      "color": "#a3e635"
-    },
-    {
-      "id": 7,
-      "name": "Thermodynamics of computation & prediction",
-      "short": "Thermo of computation",
-      "blurb": "Landauer, modular dissipation, info engines",
-      "color": "#fb7185"
-    },
-    {
-      "id": 8,
-      "name": "Quantum computational mechanics",
-      "short": "Quantum compmech",
-      "blurb": "Quantum ε-machines, quantum memory",
-      "color": "#818cf8"
-    },
-    {
-      "id": 9,
-      "name": "Applications",
-      "short": "Applications",
-      "blurb": "Materials, neuro, biology, language, finance",
-      "color": "#fb923c"
-    },
-    {
-      "id": 10,
-      "name": "Evolutionary & adaptive systems (legacy / side)",
-      "short": "Evolutionary & adaptive",
-      "blurb": "Genetic algorithms, evolutionary computation",
-      "color": "#e879f9"
-    }
+    { "id": 1, "name": "Nonlinear Dynamics and Chaos" },
+    { "id": 2, "name": "Foundations: ε-Machines and Causal States" },
+    { "id": 3, "name": "Information Measures of Structure" },
+    { "id": 4, "name": "Stochastic Process Structure" },
+    { "id": 5, "name": "Inference and Learning" },
+    { "id": 6, "name": "Spatial and Pattern Computational Mechanics" },
+    { "id": 7, "name": "Thermodynamics of Computation and Prediction" },
+    { "id": 8, "name": "Quantum Computational Mechanics" },
+    { "id": 9, "name": "Applications" },
+    { "id": 10, "name": "Evolutionary and Adaptive Systems" }
   ]
 }

@@ -21,6 +21,9 @@ interface Props {
   onPin: (id: string) => void;
 }
 
+const EDGE_ANCESTOR = "rgb(29 78 216)";
+const EDGE_DESCENDANT = "rgb(120 113 108)";
+
 export function SwimLane({
   corpus,
   hoveredId,
@@ -34,10 +37,6 @@ export function SwimLane({
   const rowIndexById = useMemo(
     () =>
       new Map<number, number>(corpus.taxonomy.rows.map((r, i) => [r.id, i])),
-    [corpus.taxonomy.rows],
-  );
-  const rowById = useMemo(
-    () => new Map(corpus.taxonomy.rows.map((r) => [r.id, r])),
     [corpus.taxonomy.rows],
   );
   const papersById = useMemo(
@@ -78,12 +77,12 @@ export function SwimLane({
       width={width}
       height={height}
       className="block"
-      style={{ background: "rgb(10 10 10)" }}
+      style={{ background: "white" }}
     >
       <g>
         {corpus.taxonomy.rows.map((row, i) => {
           const dimmed = hoveredRow !== null && hoveredRow !== row.id;
-          return <Ribbon key={row.id} row={row} rowIndex={i} width={width} dimmed={dimmed} />;
+          return <Ribbon key={row.id} rowIndex={i} width={width} dimmed={dimmed} />;
         })}
       </g>
 
@@ -100,15 +99,16 @@ export function SwimLane({
           const y2 = rowToY(toRow);
           const midX = (x1 + x2) / 2;
           const d = `M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}`;
-          const stroke = e.kind === "ancestor" ? "rgb(125 211 252)" : "rgb(251 191 36)";
+          const stroke = e.kind === "ancestor" ? EDGE_ANCESTOR : EDGE_DESCENDANT;
           return (
             <path
               key={i}
               d={d}
               fill="none"
               stroke={stroke}
-              strokeOpacity={0.7}
-              strokeWidth={1.2}
+              strokeOpacity={e.kind === "ancestor" ? 0.7 : 0.45}
+              strokeWidth={1}
+              strokeDasharray={e.kind === "descendant" ? "3 3" : undefined}
             />
           );
         })}
@@ -117,8 +117,7 @@ export function SwimLane({
       <g>
         {corpus.papers.map((p) => {
           const rowIndex = rowIndexById.get(p.primary_row);
-          const row = rowById.get(p.primary_row);
-          if (rowIndex === undefined || !row) return null;
+          if (rowIndex === undefined) return null;
           const isHovered = hoveredId === p.id;
           const isPinned = pinnedId === p.id;
           const rowDimmed = hoveredRow !== null && hoveredRow !== p.primary_row;
@@ -130,7 +129,6 @@ export function SwimLane({
               key={p.id}
               paper={p}
               rowIndex={rowIndex}
-              row={row}
               hovered={isHovered}
               pinned={isPinned}
               dimmed={dimmed}

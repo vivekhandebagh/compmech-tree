@@ -9,7 +9,9 @@
     height: 100%;
   }
   body {
-    @apply bg-neutral-950 text-neutral-100 antialiased;
+    @apply bg-white text-neutral-900 antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue",
+      system-ui, sans-serif;
     font-feature-settings: "ss01", "cv11";
   }
 }
@@ -19,13 +21,16 @@
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-width: thin;
-    scrollbar-color: rgb(64 64 64) transparent;
+    scrollbar-color: rgb(212 212 212) transparent;
   }
   .timeline-scroll::-webkit-scrollbar {
     height: 10px;
   }
   .timeline-scroll::-webkit-scrollbar-thumb {
-    background: rgb(64 64 64);
+    background: rgb(212 212 212);
     border-radius: 5px;
+  }
+  .timeline-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgb(163 163 163);
   }
 }

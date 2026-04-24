@@ -10,32 +10,28 @@ interface Props {
 export function RowLabels({ taxonomy, hoveredRow, onHoverRow }: Props) {
   return (
     <div
-      className="relative shrink-0 border-r border-neutral-800 bg-neutral-950"
+      className="relative shrink-0 border-r border-neutral-200 bg-white"
       style={{ width: LABEL_WIDTH }}
     >
-      <div style={{ height: AXIS_HEIGHT }} className="border-b border-neutral-800" />
+      <div style={{ height: AXIS_HEIGHT }} className="border-b border-neutral-200" />
       <div className="flex flex-col">
-        {taxonomy.rows.map((row) => {
+        {taxonomy.rows.map((row, i) => {
           const active = hoveredRow === null || hoveredRow === row.id;
           return (
             <div
               key={row.id}
               onMouseEnter={() => onHoverRow(row.id)}
               onMouseLeave={() => onHoverRow(null)}
-              className="flex cursor-default items-center gap-2 border-b border-neutral-900 px-3 text-xs transition-opacity"
+              className={
+                "flex cursor-default items-center px-4 text-[12.5px] leading-[1.25] text-neutral-900 transition-opacity" +
+                (i < taxonomy.rows.length - 1 ? " border-b border-neutral-100" : "")
+              }
               style={{
                 height: ROW_HEIGHT,
                 opacity: active ? 1 : 0.35,
               }}
             >
-              <span
-                className="inline-block h-2 w-2 shrink-0 rounded-full"
-                style={{ background: row.color }}
-              />
-              <div className="min-w-0 flex-1">
-                <div className="truncate font-medium text-neutral-200">{row.short}</div>
-                <div className="truncate text-[10px] text-neutral-500">{row.blurb}</div>
-              </div>
+              <span className="text-balance">{row.name}</span>
             </div>
           );
         })}

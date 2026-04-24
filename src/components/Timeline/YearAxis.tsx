@@ -10,13 +10,13 @@ export function YearAxis({ width }: Props) {
 
   return (
     <g>
-      <rect x={0} y={0} width={width} height={AXIS_HEIGHT} fill="rgb(23 23 23)" />
+      <rect x={0} y={0} width={width} height={AXIS_HEIGHT} fill="white" />
       <line
         x1={0}
         y1={AXIS_HEIGHT - 0.5}
         x2={width}
         y2={AXIS_HEIGHT - 0.5}
-        stroke="rgb(64 64 64)"
+        stroke="rgb(229 229 229)"
       />
       {years.map((y) => {
         const isDecade = y % 10 === 0;
@@ -29,7 +29,7 @@ export function YearAxis({ width }: Props) {
               y1={isDecade ? AXIS_HEIGHT - 12 : isHalf ? AXIS_HEIGHT - 8 : AXIS_HEIGHT - 4}
               x2={0}
               y2={AXIS_HEIGHT}
-              stroke="rgb(115 115 115)"
+              stroke={isDecade ? "rgb(82 82 82)" : "rgb(163 163 163)"}
               strokeWidth={isDecade ? 1 : 0.5}
             />
             {isDecade && (
@@ -37,9 +37,9 @@ export function YearAxis({ width }: Props) {
                 x={0}
                 y={14}
                 textAnchor="middle"
-                className="fill-neutral-300"
+                fill="rgb(38 38 38)"
                 fontSize={11}
-                fontFamily="ui-monospace, monospace"
+                fontFamily="-apple-system, BlinkMacSystemFont, system-ui, sans-serif"
               >
                 {y}
               </text>
@@ -49,9 +49,9 @@ export function YearAxis({ width }: Props) {
                 x={0}
                 y={14}
                 textAnchor="middle"
-                className="fill-neutral-500"
+                fill="rgb(163 163 163)"
                 fontSize={9}
-                fontFamily="ui-monospace, monospace"
+                fontFamily="-apple-system, BlinkMacSystemFont, system-ui, sans-serif"
               >
                 {String(y).slice(-2)}
               </text>

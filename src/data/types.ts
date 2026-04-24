@@ -3,9 +3,6 @@ export type RowId = number;
 export interface TaxonomyRow {
   id: RowId;
   name: string;
-  short: string;
-  blurb: string;
-  color: string;
 }
 
 export interface Taxonomy {

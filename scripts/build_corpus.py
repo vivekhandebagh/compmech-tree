@@ -39,6 +39,7 @@ from openalex import (  # noqa: E402
     extract_arxiv_id,
     fetch_works_by_author,
     is_article,
+    primary_author_ids,
     primary_author_names,
     referenced_ids,
     search_author_id,
@@ -46,6 +47,8 @@ from openalex import (  # noqa: E402
     unique,
     venue,
 )
+
+CRUTCHFIELD_NAME = "James P. Crutchfield"
 from assign_rows import assign_primary_row, assign_secondary_rows  # noqa: E402
 
 
@@ -215,7 +218,20 @@ def main() -> None:
 
     print("→ fetching works")
     raw = fetch_corpus_raw(authors)
-    print(f"  {len(raw)} unique works")
+    print(f"  {len(raw)} unique works (pre-filter)")
+
+    crutchfield = next((a for a in authors if a["name"] == CRUTCHFIELD_NAME), None)
+    if not crutchfield or not crutchfield.get("openalex_id"):
+        raise SystemExit("could not resolve Crutchfield's OpenAlex ID — aborting")
+    crutchfield_id = crutchfield["openalex_id"]
+
+    print(f"→ filtering to works co-authored by {CRUTCHFIELD_NAME} ({crutchfield_id})")
+    filtered: dict[str, dict] = {}
+    for wid, w in raw.items():
+        if crutchfield_id in primary_author_ids(w):
+            filtered[wid] = w
+    print(f"  {len(filtered)} works after co-author filter")
+    raw = filtered
 
     print("→ building paper records")
     corpus_work_ids = set(raw.keys())

@@ -24,19 +24,19 @@ export function Timeline() {
 
   if (error) {
     return (
-      <div className="p-6 text-sm text-red-400">
+      <div className="p-6 text-sm text-red-600">
         Failed to load corpus: {error}
       </div>
     );
   }
   if (!corpus) {
-    return <div className="p-6 text-sm text-neutral-400">Loading corpus…</div>;
+    return <div className="p-6 text-sm text-neutral-500">Loading corpus…</div>;
   }
 
   const focusId = hoveredId ?? pinnedId;
 
   return (
-    <div className="flex h-full min-h-0">
+    <div className="flex h-full min-h-0 bg-white">
       <RowLabels
         taxonomy={corpus.taxonomy}
         hoveredRow={hoveredRow}
@@ -44,7 +44,7 @@ export function Timeline() {
       />
       <div
         ref={scrollRef}
-        className="timeline-scroll relative min-w-0 flex-1"
+        className="timeline-scroll relative min-w-0 flex-1 bg-white"
         onClick={(e) => {
           if (e.target === e.currentTarget) setPinnedId(null);
         }}

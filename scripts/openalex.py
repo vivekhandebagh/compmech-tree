@@ -106,6 +106,16 @@ def primary_author_names(work: dict) -> list[str]:
     return names
 
 
+def primary_author_ids(work: dict) -> list[str]:
+    """Return OpenAlex short author IDs (Axxx) for a work's authors."""
+    ids: list[str] = []
+    for a in work.get("authorships", []) or []:
+        aid = (a.get("author") or {}).get("id") or ""
+        if aid:
+            ids.append(short_id(aid))
+    return ids
+
+
 def venue(work: dict) -> str | None:
     src = (work.get("primary_location") or {}).get("source") or {}
     name = src.get("display_name") or ""

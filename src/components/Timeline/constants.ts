@@ -1,4 +1,4 @@
-export const YEAR_MIN = 1980;
+export const YEAR_MIN = 1977;
 export const YEAR_MAX = new Date().getFullYear();
 export const X_PER_YEAR = 80;
 export const LEFT_PAD = 32;
@@ -7,7 +7,7 @@ export const ROW_HEIGHT = 54;
 export const AXIS_HEIGHT = 36;
 export const NODE_RADIUS = 6;
 export const NODE_HOVER_RADIUS = 9;
-export const LABEL_WIDTH = 220;
+export const LABEL_WIDTH = 264;
 export const SIDE_PANEL_WIDTH = 380;
 
 export function yearToX(year: number): number {
