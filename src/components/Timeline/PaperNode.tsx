@@ -35,10 +35,10 @@ export function PaperNode({ paper, rowIndex, hovered, pinned, dimmed, onHover, o
       )}
       <circle
         r={r}
-        fill={fill}
-        stroke={pinned ? "white" : "white"}
-        strokeWidth={pinned ? 2 : 1}
-        style={{ transition: "r 150ms, fill 120ms" }}
+        fill="white"
+        stroke={fill}
+        strokeWidth={pinned ? 2.25 : active ? 2 : 1.5}
+        style={{ transition: "r 150ms, stroke 120ms, stroke-width 120ms" }}
       />
     </g>
   );
