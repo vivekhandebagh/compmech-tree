@@ -1,0 +1,147 @@
+import { useMemo } from "react";
+import type { Corpus, Paper } from "../../data/types";
+import { YearAxis } from "./YearAxis";
+import { Ribbon } from "./Ribbon";
+import { PaperNode } from "./PaperNode";
+import {
+  AXIS_HEIGHT,
+  ROW_HEIGHT,
+  bodyHeight,
+  rowToY,
+  totalWidth,
+  yearToX,
+} from "./constants";
+
+interface Props {
+  corpus: Corpus;
+  hoveredId: string | null;
+  pinnedId: string | null;
+  hoveredRow: number | null;
+  onHover: (id: string | null) => void;
+  onPin: (id: string) => void;
+}
+
+export function SwimLane({
+  corpus,
+  hoveredId,
+  pinnedId,
+  hoveredRow,
+  onHover,
+  onPin,
+}: Props) {
+  const width = totalWidth();
+  const height = bodyHeight(corpus.taxonomy.rows.length);
+  const rowIndexById = useMemo(
+    () =>
+      new Map<number, number>(corpus.taxonomy.rows.map((r, i) => [r.id, i])),
+    [corpus.taxonomy.rows],
+  );
+  const rowById = useMemo(
+    () => new Map(corpus.taxonomy.rows.map((r) => [r.id, r])),
+    [corpus.taxonomy.rows],
+  );
+  const papersById = useMemo(
+    () => new Map(corpus.papers.map((p) => [p.id, p])),
+    [corpus.papers],
+  );
+
+  const focusId = hoveredId ?? pinnedId;
+  const focusPaper: Paper | null = focusId ? papersById.get(focusId) ?? null : null;
+
+  const highlightedIds = useMemo(() => {
+    if (!focusPaper) return null;
+    const set = new Set<string>([focusPaper.id]);
+    for (const cid of focusPaper.cites_in_corpus) set.add(cid);
+    for (const p of corpus.papers) {
+      if (p.cites_in_corpus.includes(focusPaper.id)) set.add(p.id);
+    }
+    return set;
+  }, [focusPaper, corpus.papers]);
+
+  const edges = useMemo(() => {
+    if (!focusPaper) return [];
+    const out: Array<{ from: Paper; to: Paper; kind: "ancestor" | "descendant" }> = [];
+    for (const cid of focusPaper.cites_in_corpus) {
+      const a = papersById.get(cid);
+      if (a) out.push({ from: a, to: focusPaper, kind: "ancestor" });
+    }
+    for (const p of corpus.papers) {
+      if (p.cites_in_corpus.includes(focusPaper.id)) {
+        out.push({ from: focusPaper, to: p, kind: "descendant" });
+      }
+    }
+    return out;
+  }, [focusPaper, papersById, corpus.papers]);
+
+  return (
+    <svg
+      width={width}
+      height={height}
+      className="block"
+      style={{ background: "rgb(10 10 10)" }}
+    >
+      <g>
+        {corpus.taxonomy.rows.map((row, i) => {
+          const dimmed = hoveredRow !== null && hoveredRow !== row.id;
+          return <Ribbon key={row.id} row={row} rowIndex={i} width={width} dimmed={dimmed} />;
+        })}
+      </g>
+
+      <YearAxis width={width} />
+
+      <g>
+        {edges.map((e, i) => {
+          const fromRow = rowIndexById.get(e.from.primary_row);
+          const toRow = rowIndexById.get(e.to.primary_row);
+          if (fromRow === undefined || toRow === undefined) return null;
+          const x1 = yearToX(e.from.year);
+          const y1 = rowToY(fromRow);
+          const x2 = yearToX(e.to.year);
+          const y2 = rowToY(toRow);
+          const midX = (x1 + x2) / 2;
+          const d = `M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}`;
+          const stroke = e.kind === "ancestor" ? "rgb(125 211 252)" : "rgb(251 191 36)";
+          return (
+            <path
+              key={i}
+              d={d}
+              fill="none"
+              stroke={stroke}
+              strokeOpacity={0.7}
+              strokeWidth={1.2}
+            />
+          );
+        })}
+      </g>
+
+      <g>
+        {corpus.papers.map((p) => {
+          const rowIndex = rowIndexById.get(p.primary_row);
+          const row = rowById.get(p.primary_row);
+          if (rowIndex === undefined || !row) return null;
+          const isHovered = hoveredId === p.id;
+          const isPinned = pinnedId === p.id;
+          const rowDimmed = hoveredRow !== null && hoveredRow !== p.primary_row;
+          const focusDimmed =
+            highlightedIds !== null && !highlightedIds.has(p.id);
+          const dimmed = rowDimmed || focusDimmed;
+          return (
+            <PaperNode
+              key={p.id}
+              paper={p}
+              rowIndex={rowIndex}
+              row={row}
+              hovered={isHovered}
+              pinned={isPinned}
+              dimmed={dimmed}
+              onHover={onHover}
+              onPin={onPin}
+            />
+          );
+        })}
+      </g>
+    </svg>
+  );
+}
+
+export const SWIMLANE_DIMENSIONS = { AXIS_HEIGHT, ROW_HEIGHT };

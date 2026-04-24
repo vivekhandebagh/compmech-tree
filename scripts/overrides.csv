@@ -1,0 +1,12 @@
+id,include,primary_row,secondary_rows,landmark,note
+# Per-paper overrides applied last in the pipeline. Edit by hand.
+#
+# Columns:
+#   id              paper id as emitted by build_corpus.py
+#   include         TRUE (default) or FALSE to drop the paper
+#   primary_row     1..10 to override the automatic row assignment
+#   secondary_rows  semicolon-separated ids, e.g. "3;4"
+#   landmark        TRUE to flag for zoom-out visibility
+#   note            free-text, not shipped
+#
+# Leave a cell blank to keep the pipeline default.

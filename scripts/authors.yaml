@@ -1,0 +1,89 @@
+# Author seed list for the compmech-tree corpus.
+#
+# Vivek: verify this list against Crutchfield's CV
+# (https://csc.ucdavis.edu/~chaos/Biography/JPCCV.www.html).
+# Names marked TODO-VERIFY are well-known in the lab's published work but
+# have not been cross-checked against the authoritative student list yet.
+#
+# - name:           Display name (used for dedup heuristics)
+# - role:           advisor | phd | postdoc | ms | collaborator
+# - openalex_id:    OpenAlex author ID (Axxx...). Resolved automatically if
+#                   omitted, but pinning it avoids name-collision surprises.
+# - orcid:          optional ORCID
+# - include:        true (default) | false to exclude from the seed fetch
+# - note:           free-text note (won't ship to JSON)
+
+authors:
+  - name: James P. Crutchfield
+    role: advisor
+    note: Root of the lineage.
+
+  # --- CV-confirmed (older CV snapshot) ---
+  - name: Karl Young
+    role: phd
+    note: PhD Physics, UC Santa Cruz 1995; NRC postdoc with Crutchfield.
+  - name: David P. Feldman
+    role: phd
+    note: PhD Physics, UC Davis 1998.
+  - name: Cosma R. Shalizi
+    role: postdoc
+    note: PhD Wisconsin 2001; postdoc with Crutchfield.
+  - name: James E. Hanson
+    role: postdoc
+    note: PhD Berkeley 1994.
+  - name: Dowman P. Varn
+    role: postdoc
+    note: PhD Tennessee 2001.
+  - name: Rajarshi Das
+    role: postdoc
+    note: NSF Postdoc, collaborator on GA/CA work.
+  - name: Erik van Nimwegen
+    role: phd
+    note: PhD Utrecht 1999.
+  - name: Wim Hordijk
+    role: phd
+    note: PhD UNM 1999.
+  - name: Peter Hraber
+    role: phd
+    note: PhD UNM 1998.
+  - name: Daniel R. Upper
+    role: phd
+    note: PhD Math Berkeley 1996.
+  - name: Bruce McNamara
+    role: phd
+    note: PhD Physics UC Santa Cruz 1993.
+
+  # --- TODO-VERIFY (well-known in published work; confirm against the CV) ---
+  - name: Christopher J. Ellison
+    role: phd
+    note: TODO-VERIFY
+  - name: John R. Mahoney
+    role: phd
+    note: TODO-VERIFY
+  - name: Nicholas F. Travers
+    role: phd
+    note: TODO-VERIFY
+  - name: Sarah E. Marzen
+    role: phd
+    note: TODO-VERIFY
+  - name: Christopher C. Strelioff
+    role: phd
+    note: TODO-VERIFY
+  - name: Ryan G. James
+    role: phd
+    note: TODO-VERIFY
+  - name: Alexander B. Boyd
+    role: phd
+    note: TODO-VERIFY
+  - name: Paul M. Riechers
+    role: phd
+    note: TODO-VERIFY
+  - name: Adam Rupe
+    role: phd
+    note: TODO-VERIFY
+  - name: Samuel P. Loomis
+    role: phd
+    note: TODO-VERIFY
+  - name: Cina Aghamohammadi
+    role: phd
+    note: TODO-VERIFY
